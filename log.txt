@@ -1,0 +1,7 @@
+
+== Compilation error on file lib/streamingutils/irc/bot.ex ==
+** (CompileError) lib/streamingutils/irc/bot.ex:36: undefined function handler/0
+    (stdlib) lists.erl:1337: :lists.foreach/2
+    (stdlib) erl_eval.erl:669: :erl_eval.do_apply/6
+    (elixir) lib/kernel/parallel_compiler.ex:100: anonymous fn/4 in Kernel.ParallelCompiler.spawn_compilers/8
+
