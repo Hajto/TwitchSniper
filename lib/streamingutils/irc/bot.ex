@@ -16,8 +16,21 @@ defmodule TwitchSniper.Bot do
 
     alias ExIrc.Client
 
+    #Client Api
+
+    def send_message(msg) do
+      GenServer.cast( __MODULE__, { :broadcast_message, msg })
+    end
+
+    ##Server Callbacks
+
     def start_link(_) do
-        GenServer.start_link(__MODULE__, [%State{}])
+        GenServer.start_link(__MODULE__, [%State{}], name: __MODULE__)
+    end
+
+    def handle_cast({:broadcast_message, msg}, config) do
+      Client.msg(config.client, :privmsg, config.channel, msg)
+      { :noreply, config }
     end
 
     def handle_info({:connected, server, port}, config) do
@@ -29,20 +42,18 @@ defmodule TwitchSniper.Bot do
 
     def handle_info(:logged_in, config) do
       Client.join(config.client, config.channel)
-      Client.msg(config.client, :privmsg, config.channel , "I am bot!")
-      Client.msg(config.client, :ctcp, config.channel, "Testing my capabilities!")
+      Client.msg(config.client, :privmsg, config.channel , "Hello World")
       {:noreply, config}
     end
 
     def handle_info({:received, msg, user , channel },config) do
-      # Logger.info "Napisalem na czacie #{msg}"
-      # Client.msg(config.client, :privmsg, config.channel, "Hajtosek napisa na czacie: #{msg}")
       process_command(msg, user)
+      Logger.info "#{msg} - #{user} - #{channel}"
       {:noreply, config}
     end
 
     def handle_info(msg, config) do
-      # Logger.info  inspect(msg)
+      Logger.info  inspect(msg)
       {:noreply, config}
     end
 
@@ -56,7 +67,7 @@ defmodule TwitchSniper.Bot do
         ExIrc.Client.connect!(client, state.host, state.port)
         ExIrc.Client.logon(client, state.pass, state.nick, state.user, state.name)
 
-        IO.inspect "IRC activated"
+        IO.inspect "IRC Monitor activated"
         #Initialize CommandSystem
         TwitchSniper.ChatCommand.init
 

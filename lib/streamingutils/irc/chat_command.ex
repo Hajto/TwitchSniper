@@ -4,6 +4,10 @@ defmodule TwitchSniper.ChatCommand do
   defmacro __using__(_) do
     quote do
       @behaviour TwitchSniper.ChatCommand
+
+      def check(_), do: false
+
+      defoverridable [check: 1]
     end
   end
 
@@ -18,6 +22,10 @@ defmodule TwitchSniper.ChatCommand do
   def find_all_using do
     available_modules(__MODULE__)
   end
+
+  @doc """
+    Finds all modules that has adopted ChatCommand behaviour
+  """
 
   defp available_modules(plugin_type) do
     # Ensure the current projects code path is loaded

@@ -1,7 +1,20 @@
-
-== Compilation error on file lib/streamingutils/irc/bot.ex ==
-** (CompileError) lib/streamingutils/irc/bot.ex:36: undefined function handler/0
-    (stdlib) lists.erl:1337: :lists.foreach/2
-    (stdlib) erl_eval.erl:669: :erl_eval.do_apply/6
-    (elixir) lib/kernel/parallel_compiler.ex:100: anonymous fn/4 in Kernel.ParallelCompiler.spawn_compilers/8
-
+** (exit) exited in: GenServer.call(TwitchSniper.GiveawayManager, {:cycle}, 5000
+)
+    ** (EXIT) an exception was raised:
+        ** (ArgumentError) argument error
+            :erlang.apply([%TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}], :product, [])
+            (streamingutils) TwitchSniper.GiveawayManager.handle_call/3
+            (stdlib) gen_server.erl:629: :gen_server.try_handle_call/4
+            (stdlib) gen_server.erl:661: :gen_server.handle_msg/5
+            (stdlib) proc_lib.erl:239: :proc_lib.init_p_do_apply/3
+[error] GenServer TwitchSniper.GiveawayManager terminating
+** (ArgumentError) argument error
+    :erlang.apply([%TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}], :product, [])
+    (streamingutils) TwitchSniper.GiveawayManager.handle_call/3
+    (stdlib) gen_server.erl:629: :gen_server.try_handle_call/4
+    (stdlib) gen_server.erl:661: :gen_server.handle_msg/5
+    (stdlib) proc_lib.erl:239: :proc_lib.init_p_do_apply/3
+Last message: {:cycle}
+State: {[%TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}, %TwitchSniper.Giveaway{delay: 200, organiser: "Idiot", product: "Some neet stuff"}], [%TwitchSniper.Giveaway{delay: 300000, organiser: "Idiot", product: "Some neet stuff"}]}
+    (elixir) lib/gen_server.ex:564: GenServer.call/3
+iex(12)>

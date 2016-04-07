@@ -8,11 +8,6 @@ defmodule TwitchSniper do
 
     {:ok, client} = ExIrc.start_client!
 
-   children = [
-     # Define workers and child supervisors to be supervised
-
-   ]
-
     children = [
       # Start the endpoint when the application starts
       supervisor(TwitchSniper.Endpoint, []),

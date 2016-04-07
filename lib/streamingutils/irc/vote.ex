@@ -18,6 +18,8 @@ defmodule TwitchSniper.Vote do
   """
   @spec start_vote(list) :: { :ok | :error, String.t }
   def start_vote(options) do
+    as_string = List.to_string(options)
+    TwitchSniper.Bot.send_message("Poll started, please vote using !vote command followed by option #{ as_string }")
     Agent.get_and_update(__MODULE__, fn current_state ->
       case current_state do
         %Vote{ active: true } -> { { :error, "Already started" }, current_state }
@@ -27,6 +29,7 @@ defmodule TwitchSniper.Vote do
   end
 
   def vote_for(option, nickname) do
+    option = escape_string(option)
     Agent.update(__MODULE__, fn state ->
       votes = state.votes
       case Map.get(votes, option) do
@@ -46,15 +49,22 @@ defmodule TwitchSniper.Vote do
   def get_results do
     Agent.get(__MODULE__, fn state -> state.votes end)
   end
-
-  defp zero_votes(options) do
-    Enum.map( options , fn(option) -> { option, 0 } end) |> Enum.into(%{})
-  end
-
+  
   def end_vote do
     Agent.get_and_update(__MODULE__,  fn current_state ->
       { current_state.votes , %{ current_state | active: false, votes: Map.new } }
     end)
+  end
+
+  defp zero_votes(options) do
+    Enum.map(options, &(escape_string(&1)) )
+    |> Enum.map(fn(option) -> { option, 0 } end) |> Enum.into(%{})
+  end
+
+
+  defp escape_string(text) do
+    Regex.replace(~r/\s/, text,"")
+    |> String.downcase
   end
 
 end
