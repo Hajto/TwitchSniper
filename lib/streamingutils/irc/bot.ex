@@ -11,7 +11,7 @@ defmodule TwitchSniper.Bot do
                   name: "twitchsniperbot",
                   client: nil,
                   handlers: [],
-                  channel: "#hajtosek"
+                  channel: "#cohhcarnage"
     end
 
     alias ExIrc.Client
@@ -46,9 +46,18 @@ defmodule TwitchSniper.Bot do
       {:noreply, config}
     end
 
-    def handle_info({:received, msg, user , channel },config) do
+    def handle_info({:received, user, "twitchnotify" , channel },config) do
+      case TwitchSniper.Subscriptions.process(user) do
+        {:ok , {name, how_long } } -> Logger.info "#{name} zrobil resub po raz #{how_long}"
+        {:ok , name } -> Logger.info "#{name} zasubskrybowal kanal"
+        :nope -> Logger.info "#{user} - twitchnotify - #{channel}"
+      end
+      {:noreply, config}
+    end
+
+    def handle_info({:received, msg, user , _channel },config) do
       process_command(msg, user)
-      Logger.info "#{msg} - #{user} - #{channel}"
+      #Logger.info "#{msg} - #{user} - #{channel}"
       {:noreply, config}
     end
 

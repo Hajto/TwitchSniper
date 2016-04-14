@@ -1,0 +1,23 @@
+<h2>Show user command</h2>
+
+<ul>
+
+  <li>
+    <strong>Command:</strong>
+    <%= @user_command.command %>
+  </li>
+
+  <li>
+    <strong>Info:</strong>
+    <%= @user_command.info %>
+  </li>
+
+  <li>
+    <strong>Delay:</strong>
+    <%= @user_command.delay %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: user_command_path(@conn, :edit, @user_command) %>
+<%= link "Back", to: user_command_path(@conn, :index) %>

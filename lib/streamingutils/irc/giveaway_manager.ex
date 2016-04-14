@@ -2,12 +2,17 @@ defmodule TwitchSniper.GiveawayManager do
   use GenServer
   require Logger
 
+  @moduledoc """
+  Manages current giveaways and cycles them.
+  """
+
   alias TwitchSniper.Giveaway
 
   def start_link do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
+  @spec new_giveaway(TwitchSniper.Giveaway) :: :ok
   def new_giveaway(item) do
     GenServer.cast(__MODULE__, {:new_item, item})
   end
@@ -34,16 +39,23 @@ defmodule TwitchSniper.GiveawayManager do
   end
 
   def handle_call({:get_first}, _from, state) do
-    Logger.info "Getting first"
-    {:reply, :queue.get(state) , state}
+    if(:queue.is_empty(state)) do
+      {:reply, nil, state}
+    else
+      {:reply, :queue.get(state) , state}
+    end
   end
 
   def handle_cast({ :cycle }, state) do
-    { { finalized,_}, new_queue} = :queue.out(state)
-    Giveaway.finalize(finalized)
-    new_item = :queue.get(new_queue)
-    start_cycling(new_item.delay)
-    {:noreply, new_queue }
+    cond do
+      :queue.is_empty(state) -> { :noreply, state }
+      true ->
+        { { _ , finalized }, new_queue} = :queue.out(state)
+        Giveaway.finalize(finalized)
+        new_item = :queue.get(new_queue)
+        start_cycling(new_item.delay)
+        {:noreply, new_queue }
+    end
   end
 
   def handle_cast({:new_item, giveaway}, state) do
@@ -59,9 +71,5 @@ defmodule TwitchSniper.GiveawayManager do
     Logger.error message
     {:noreply, state}
   end
-
-  # def terminate(_reason, _state) do
-  #   flush
-  # end
 
 end

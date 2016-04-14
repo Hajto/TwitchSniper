@@ -1,0 +1,17 @@
+<div class="row">
+  <%= form_for @conn , bot_path(@conn, :create_giveaway ), [as: :giveaway], fn f -> %>
+    <div class="form-group">
+      <%= label f, :organiser , class: "control-label" %>
+      <%= text_input f, :organiser, class: "form-control", placeholder: "TotallyRandomGuyFromTwitch" %>
+    </div>
+    <div class="form-group">
+      <%= label f, :product ,"Thing given away" , class: "control-label" %>
+      <%= text_input f, :product, class: "form-control", placeholder: "Very awesome game that i don't need!" %>
+    </div>
+    <div class="form-group">
+      <%= label f, :delay, "Duration in ms" , class: "control-label" %>
+      <%= number_input f, :delay, class: "form-control", placeholder: "120000" %>
+    </div>
+    <%= submit "Submit", class: "btn btn-primary" %>
+  <% end %>
+</div>

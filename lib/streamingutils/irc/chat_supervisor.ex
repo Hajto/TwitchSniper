@@ -8,7 +8,8 @@ defmodule TwitchSniper.ChatSupervisor do
   def init(:ok) do
     children = [
       worker(TwitchSniper.Vote, []),
-      worker(TwitchSniper.GiveawayManager, [])
+      worker(TwitchSniper.GiveawayManager, []),
+      worker(TwitchSniper.InfoCommand,[])
     ]
 
     supervise(children, strategy: :one_for_one)

@@ -1,0 +1,30 @@
+<h2>Listing commands</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Info</th>
+      <th>Delay</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for user_command <- @commands do %>
+    <tr>
+      <td><%= user_command.command %></td>
+      <td><%= user_command.info %></td>
+      <td><%= user_command.delay %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: user_command_path(@conn, :show, user_command), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: user_command_path(@conn, :edit, user_command), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: user_command_path(@conn, :delete, user_command), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New user command", to: user_command_path(@conn, :new) %>

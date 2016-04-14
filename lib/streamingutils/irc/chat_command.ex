@@ -5,9 +5,9 @@ defmodule TwitchSniper.ChatCommand do
     quote do
       @behaviour TwitchSniper.ChatCommand
 
-      def check(_), do: false
+      def check(_,_), do: false
 
-      defoverridable [check: 1]
+      defoverridable [check: 2]
     end
   end
 

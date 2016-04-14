@@ -19,6 +19,19 @@ defmodule TwitchSniper.Router do
     get "/", PageController, :index
   end
 
+  scope "/commands", TwitchSniper do
+    pipe_through :browser
+
+    resources "/", UserCommandController
+  end
+
+  scope "/bot", TwitchSniper do
+    pipe_through :browser
+
+    get "/giveaway", BotController, :new_giveaway
+    post "/giveaway", BotController, :create_giveaway
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", TwitchSniper do
   #   pipe_through :api

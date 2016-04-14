@@ -1,5 +1,9 @@
 defmodule TwitchSniper.Giveaway do
 
+  @moduledoc """
+    Provides functions for giveaway
+  """
+
   @doc """
     Struct describing a giveaway.
     Organiser should be String returned from TwitchAPI or Chat.
@@ -24,8 +28,15 @@ defmodule TwitchSniper.Giveaway do
     #TODO
   end
 
+  @doc """
+    Takes an giveaway queue and finishes first. Chooses random winner.
+  """
+
   def finalize(giveaway) do
-    
+    cond do
+      !Enum.empty?(giveaway.participants) -> Enum.random(giveaway.participants)
+      true -> nil
+    end
   end
 
 end
